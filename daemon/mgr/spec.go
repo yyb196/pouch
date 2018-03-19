@@ -3,6 +3,8 @@ package mgr
 import (
 	"context"
 
+	"github.com/alibaba/pouch/apis/plugins"
+
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
@@ -10,9 +12,10 @@ import (
 type SpecWrapper struct {
 	s *specs.Spec
 
-	ctrMgr ContainerMgr
-	volMgr VolumeMgr
-	netMgr NetworkMgr
+	ctrMgr        ContainerMgr
+	volMgr        VolumeMgr
+	netMgr        NetworkMgr
+	preStartHooks plugins.PreStartHook
 }
 
 // SetupFunc defines spec setup function type.
