@@ -506,20 +506,22 @@ func (mgr *ContainerManager) Start(ctx context.Context, id, detachKeys string) (
 		s.Linux.CgroupsPath = filepath.Join(cgroupsParent, c.ID())
 	}
 
-	var customHooks plugins.PreStartHook
+	var prioArr []int
+	var argsArr [][]string
 	if mgr.containerPlugin != nil {
-		customHooks, err = mgr.containerPlugin.PreStart(c)
+		prioArr, argsArr, err = mgr.containerPlugin.PreStart(c)
 		if err != nil {
 			return errors.Wrapf(err, "get pre-start hook error from container plugin")
 		}
 	}
 
 	sw := &SpecWrapper{
-		s:             s,
-		ctrMgr:        mgr,
-		volMgr:        mgr.VolumeMgr,
-		netMgr:        mgr.NetworkMgr,
-		preStartHooks: customHooks,
+		s:       s,
+		ctrMgr:  mgr,
+		volMgr:  mgr.VolumeMgr,
+		netMgr:  mgr.NetworkMgr,
+		prioArr: prioArr,
+		argsArr: argsArr,
 	}
 
 	for _, setup := range SetupFuncs() {

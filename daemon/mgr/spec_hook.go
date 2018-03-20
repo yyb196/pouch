@@ -34,13 +34,13 @@ func setupHook(ctx context.Context, c *ContainerMeta, spec *SpecWrapper) error {
 
 	spec.s.Hooks.Prestart = append(spec.s.Hooks.Prestart, preStartHook)
 
-	if len(spec.preStartHooks.Priority()) > 0 {
+	if len(spec.argsArr) > 0 {
 		var hookArr []*wrapperEmbedPrestart
 		for i, hook := range spec.s.Hooks.Prestart {
 			hookArr = append(hookArr, &wrapperEmbedPrestart{-i, append([]string{hook.Path}, hook.Args...)})
 		}
-		priorityArr := spec.preStartHooks.Priority()
-		argsArr := spec.preStartHooks.Hook()
+		priorityArr := spec.prioArr
+		argsArr := spec.argsArr
 		for i, p := range priorityArr {
 			hookArr = append(hookArr, &wrapperEmbedPrestart{p, argsArr[i]})
 		}
