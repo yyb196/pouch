@@ -64,7 +64,7 @@ func main() {
 func setupFlags(cmd *cobra.Command) {
 	// Cobra supports Persistent Flags, which, if defined here,
 	// will be global for your application.
-	flagSet := cmd.PersistentFlags()
+	flagSet := cmd.Flags()
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
